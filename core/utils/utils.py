@@ -126,14 +126,14 @@ def np_load(foldername):
         foldername (str): path to the folder.
     """
     data = {}
-    if os.path.isfile(foldername+'/x.npy'):
-        x = np.load(foldername+'/x.npy')
+    if os.path.isfile(os.path.join(foldername, 'x.npy')):
+        x = np.load(os.path.join(foldername, 'x.npy'))
         data['x'] = x
-    if os.path.isfile(foldername+'/y.npy'):
-        y = np.load(foldername+'/y.npy')
+    if os.path.isfile(os.path.join(foldername, 'y.npy')):
+        y = np.load(os.path.join(foldername, 'y.npy'))
         data['y'] = y
-    if os.path.isfile(foldername+'/r.npy'):
-        r = np.load(foldername+'/r.npy')
+    if os.path.isfile(os.path.join(foldername, 'r.npy')):
+        r = np.load(os.path.join(foldername, 'r.npy'))
         data['r'] = r
     return data
     
@@ -148,11 +148,11 @@ def np_save(data, foldername):
     if not os.path.exists(foldername):
         os.makedirs(foldername, exist_ok=True)
     if 'x' in data:
-        np.save(foldername+'/x.npy', data['x'])
+        np.save(os.path.join(foldername, 'x.npy'), data['x'])
     if 'y' in data:
-        np.save(foldername+'/y.npy', data['y'])
+        np.save(os.path.join(foldername, 'y.npy'), data['y'])
     if 'r' in data:
-        np.save(foldername+'/r.npy', data['r'])
+        np.save(os.path.join(foldername, 'r.npy'), data['r'])
     
 
 class NumpyToTensor(object):

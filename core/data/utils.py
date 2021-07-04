@@ -20,9 +20,9 @@ class AdversarialDatasetWithPerturbation(torch.utils.data.Dataset):
         super(AdversarialDatasetWithPerturbation, self).__init__()
         
         x_path = re.sub(r'adv_(\d)+', 'adv_0', root)   
-        if os.path.isfile(root + '/x.npy'):
+        if os.path.isfile(os.path.join(root, 'x.npy')):
             data = np_load(x_path)
-        elif os.path.isfile(x_path + '/x.npy'):
+        elif os.path.isfile(os.path.join(x_path, 'x.npy')):
             data = np_load(x_path)
         else:
             raise FileNotFoundError('x, y not found at {} and {}.'.format(root, x_path))

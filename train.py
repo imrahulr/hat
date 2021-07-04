@@ -31,19 +31,19 @@ parse = parser_train()
 args = parse.parse_args()
 
 
-DATA_DIR = args.data_dir + args.data + '/'
-LOG_DIR = args.log_dir + args.desc
-WEIGHTS = LOG_DIR + '/weights-best.pt'
-TMP = args.tmp_dir + args.desc
+DATA_DIR = os.path.join(args.data_dir, args.data)
+LOG_DIR = os.path.join(args.log_dir, args.desc)
+WEIGHTS = os.path.join(LOG_DIR, 'weights-best.pt')
+TMP = os.path.join(args.tmp_dir, args.desc)
 if os.path.exists(LOG_DIR):
     shutil.rmtree(LOG_DIR)
 os.makedirs(LOG_DIR)
 if args.exp and not os.path.exists(TMP):
     os.makedirs(TMP, exist_ok=True)
     print ('Tmp Dir: ', TMP)
-logger = Logger(LOG_DIR+'/log-train.log')
+logger = Logger(os.path.join(LOG_DIR, 'log-train.log'))
 
-with open(LOG_DIR+'/args.txt', 'w') as f:
+with open(os.path.join(LOG_DIR, 'args.txt'), 'w') as f:
     json.dump(args.__dict__, f, indent=4)
 
 
@@ -131,7 +131,7 @@ for epoch in range(1, NUM_STD_EPOCHS+1):
         
 if NUM_STD_EPOCHS > 0:
     trainer.load_model(WEIGHTS)
-    metrics.to_csv(LOG_DIR+'/stats_std.csv', index=False)
+    metrics.to_csv(os.path.join(LOG_DIR, 'stats_std.csv'), index=False)
 
     
 
@@ -145,9 +145,9 @@ if NUM_ADV_EPOCHS > 0:
     if args.exp:
         test_adv_acc = trainer.eval(test_dataloader, adversarial=True)
         logger.log('Adversarial Accuracy-\tTest: {:2f}%.'.format(test_adv_acc*100))
-        trainer.save_model(TMP+'/model_0.pt')        
-        _ = trainer.save_and_eval_adversarial(train_eval_dataloader, save=TMP+'/eval_train_adv_0')
-        _ = trainer.save_and_eval_adversarial(test_eval_dataloader, save=TMP+'/eval_test_adv_0')
+        trainer.save_model(os.path.join(TMP, 'model_0.pt'))     
+        _ = trainer.save_and_eval_adversarial(train_eval_dataloader, save=os.path.join(TMP, 'eval_train_adv_0'))
+        _ = trainer.save_and_eval_adversarial(test_eval_dataloader, save=os.path.join(TMP, 'eval_test_adv_0'))
     
     old_score = [0.0, 0.0]
     logger.log('Adversarial training for {} epochs'.format(NUM_ADV_EPOCHS))
@@ -166,9 +166,9 @@ for epoch in range(1, NUM_ADV_EPOCHS+1):
     test_acc = trainer.eval(test_dataloader)
 
     if args.exp and (epoch % 5 == 0 or epoch == 1):
-        trainer.save_model(TMP+'/model_{}.pt'.format(epoch))
-        save_eval_train_file = TMP+'/eval_train_adv_{}'.format(epoch) 
-        save_eval_test_file = TMP+'/eval_test_adv_{}'.format(epoch)
+        trainer.save_model(os.path.join(TMP, 'model_{}.pt'.format(epoch)))
+        save_eval_train_file = os.path.join(TMP, 'eval_train_adv_{}'.format(epoch))
+        save_eval_test_file = os.path.join(TMP, 'eval_test_adv_{}'.format(epoch))
         _ = trainer.save_and_eval_adversarial(train_eval_dataloader, save=save_eval_train_file, save_all=False)
         _ = trainer.save_and_eval_adversarial(test_eval_dataloader, save=save_eval_test_file, save_all=False)
     
@@ -191,11 +191,11 @@ for epoch in range(1, NUM_ADV_EPOCHS+1):
     if test_adv_acc >= old_score[1]:
         old_score[0], old_score[1] = test_acc, test_adv_acc
         trainer.save_model(WEIGHTS)
-    trainer.save_model(LOG_DIR+'/weights-last.pt')
+    trainer.save_model(os.path.join(LOG_DIR, 'weights-last.pt'))
 
     logger.log('Time taken: {}'.format(format_time(time.time()-start)))
     metrics = metrics.append(pd.DataFrame(epoch_metrics, index=[0]), ignore_index=True)
-    metrics.to_csv(LOG_DIR+'/stats_adv.csv', index=False)
+    metrics.to_csv(os.path.join(LOG_DIR, 'stats_adv.csv'), index=False)
 
     
     

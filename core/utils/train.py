@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm as tqdm
 
-import re
+import os
 import json
 import torch
 import torch.nn as nn
@@ -45,14 +45,14 @@ class Trainer(object):
         self.init_optimizer(self.params.num_std_epochs)
         
         if self.params.pretrained_file is not None:
-            self.load_model(self.params.log_dir+self.params.pretrained_file+'/weights-best.pt')
+            self.load_model(os.path.join(self.params.log_dir, self.params.pretrained_file, 'weights-best.pt'))
         
         if self.params.helper_model is not None:
             print (f'Using helper model: {self.params.helper_model}.')
-            with open(self.params.log_dir+self.params.helper_model+'/args.txt', 'r') as f:
+            with open(os.path.join(self.params.log_dir, self.params.helper_model, 'args.txt'), 'r') as f:
                 hr_args = json.load(f)
             self.hr_model = create_model(hr_args['model'], hr_args['normalize'], info, device)
-            checkpoint = torch.load(self.params.log_dir+self.params.helper_model+'/weights-best.pt')
+            checkpoint = torch.load(os.path.join(self.params.log_dir, self.params.helper_model, 'weights-best.pt'))
             self.hr_model.load_state_dict(checkpoint['model_state_dict'])
             self.hr_model.eval()
             del checkpoint, hr_args
