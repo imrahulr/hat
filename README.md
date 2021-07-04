@@ -23,11 +23,11 @@ $ pip install -r requirements.txt
     ├── models             # Model architectures
     └── utils              # Helpers, training and testing functions
     └── metrics.py         # Evaluation metrics
-└── train.py		 # Training script
-└── train-wa.py		 # Training with model weight averaging
-└── eval-aa.py		 # AutoAttack evaluation
-└── eval-adv.py		 # PGD+ and CW evaluation
-└── eval-rb.py		 # RobustBench evaluation
+└── train.py         # Training script
+└── train-wa.py      # Training with model weight averaging
+└── eval-aa.py       # AutoAttack evaluation
+└── eval-adv.py      # PGD+ and CW evaluation
+└── eval-rb.py       # RobustBench evaluation
 ```
 
 ## Usage
@@ -36,7 +36,7 @@ $ pip install -r requirements.txt
 
 Run [`train.py`](./train.py) for standard, adversarial, TRADES, MART and HAT training. Example commands for HAT training are provided below:
 
-Fisrt, train a ResNet-18 model on CIFAR-10 with standard training:
+First, train a ResNet-18 model on CIFAR-10 with standard training:
 ```
 $ python train.py --data-dir <data_dir> \
     --log-dir <log_dir> \
@@ -63,7 +63,7 @@ $ python train.py --data-dir <data_dir> \
 
 ### Robustness Evaluation
 
-The trained models can be evaluated by running [eval-aa.py](./eval-aa.py) which uses AutoAttack for evaluating the robust accuracy.
+The trained models can be evaluated by running [`eval-aa.py`](./eval-aa.py) which uses [AutoAttack](https://github.com/fra31/auto-attack) for evaluating the robust accuracy. For example:
 ```
 $ python eval-aa.py --data-dir <data_dir> \
     --log-dir <log_dir> \
@@ -82,11 +82,11 @@ $ python eval-adv.py --wb --data-dir <data_dir> \
 HAT can be combined with the imporvements from the paper "[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)"  (Gowal et al., 2020) to obtain state-of-the-art performance on CIFAR-10. 
 
 
-##### Training a Standard Network for Computing Helper Labels 
+#### Training a Standard Network for Computing Helper Labels 
 
-Train a model on CIFAR-10 with standard training as [mentioned above](#training) *or* alternatively download the pretrained model from this [link](https://www.dropbox.com/sh/vzli8frhfsxo46q/AAB25dkdH6ZaDxNJzHoQNDX8a?dl=0) and place the contents of the corresponding zip file in the ```<log_dir>```.
+Train a model on CIFAR-10 with standard training as [mentioned above](#training) *or* alternatively download the pretrained model from this [link](https://www.dropbox.com/sh/vzli8frhfsxo46q/AAB25dkdH6ZaDxNJzHoQNDX8a?dl=0) and place the contents of the corresponding zip file in the directory ```<log_dir>```.
 
-##### HAT Training
+#### HAT Training
 
 Run [`train-wa.py`](./train-wa.py) for training a robust network via HAT along with the imporvements from Gowal et al., 2020. For example, train a WideResNet-28-10 model via HAT on CIFAR-10 with the additional pseudolabeled data provided by [Carmon et al., 2019](https://github.com/yaircarmon/semisup-adv):
 
