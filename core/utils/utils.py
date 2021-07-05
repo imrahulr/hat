@@ -14,15 +14,15 @@ class SmoothCrossEntropyLoss(torch.nn.Module):
     def __init__(self, smoothing=0.0, reduction='mean'):
         super(SmoothCrossEntropyLoss, self).__init__()
         self.smoothing = smoothing
+        self.confidence = 1.0 - smoothing
         self.reduction = reduction
 
-    def forward(self, input, target):
-        num_classes = input.shape[1]
-        if target.ndim == 1:
-            target = F.one_hot(target, num_classes)
-        target = (1 - self.smoothing) * target + self.smoothing / num_classes
-        logprobs = F.log_softmax(input, dim=1)
-        loss = - (target * logprobs).sum(dim=1)        
+    def forward(self, x, target):
+        logprobs = torch.nn.functional.log_softmax(x, dim=-1)
+        nll_loss = -logprobs.gather(dim=-1, index=target.unsqueeze(1))
+        nll_loss = nll_loss.squeeze(1)
+        smooth_loss = -logprobs.mean(dim=-1)
+        loss = self.confidence * nll_loss + self.smoothing * smooth_loss
         if self.reduction == 'mean':
             return loss.mean()
         elif self.reduction == 'sum':
