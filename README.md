@@ -95,10 +95,11 @@ $ python train-wa.py --data-dir <data_dir> \
     --log-dir <log_dir> \
     --desc <name_of_the_experiment> \
     --data cifar10s \
-    --batch-size 1024 \
+    --batch-size 512 \
+    --batch-size-validation 512 \
     --model wrn-28-10-swish \
-    --num-adv-epochs 400 \
-    --lr 0.4 --tau 0.995 \
+    --num-adv-epochs 300 \
+    --lr 0.2 --tau 0.995 \
     --unsup-fraction 0.7 \
     --aux-data-filename <path_to_additional_data> \
     --helper-model <helper_model_log_dir_name> \
