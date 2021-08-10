@@ -109,7 +109,7 @@ $ python train-wa.py --data-dir <data_dir> \
 ```
 
 
-### Results
+## Results
 
 Below, we provide the results with HAT. In the settings with additional data, we follow the experimental setup used in Gowal et al., 2020 and Rebuffi et al., 2021. Whereas we resort to the experimental setup provided in our paper when not using additional data. 
 
