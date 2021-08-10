@@ -138,8 +138,8 @@ Our models achieve around ~0.3-0.5% lower robustness than that reported in Gowal
 |:---|:---:|:---:|:---:|:---:|:---:|
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 8/255 | ResNet-18 | 84.90 | 49.08 |
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 12/255 | ResNet-18 | 77.13 | 34.56 |
-| SVHN | &#8467;<sub>&infin;</sub> | 8/255 | ResNet | 92.46 | 53.19 |
-| TI-200 | &#8467;<sub>&infin;</sub> | 8/255 | ResNet | 52.60 | 18.14 |
+| SVHN | &#8467;<sub>&infin;</sub> | 8/255 | ResNet-18 | 92.46 | 53.19 |
+| TI-200 | &#8467;<sub>&infin;</sub> | 8/255 | ResNet-18 | 52.60 | 18.14 |
 
 
 ## Citing this work
