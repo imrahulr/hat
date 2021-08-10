@@ -13,6 +13,8 @@ CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
 CIFAR10_STD = (0.2471, 0.2435, 0.2616)
 CIFAR100_MEAN = (0.5071, 0.4865, 0.4409)
 CIFAR100_STD = (0.2673, 0.2564, 0.2762)
+SVHN_MEAN = (0.5, 0.5, 0.5)
+SVHN_STD = (0.5, 0.5, 0.5)
 
 _ACTIVATION = {
     'relu': nn.ReLU,
@@ -177,16 +179,15 @@ def wideresnetwithswish(name, dataset='cifar10', num_classes=10, device='cpu'):
     Returns:
         torch.nn.Module.
     """
-    if 'cifar10' not in dataset:
-        raise ValueError('WideResNets with Swish activation only support CIFAR-10 and CIFAR-100!')
-
     name_parts = name.split('-')
     depth = int(name_parts[1])
     widen = int(name_parts[2])
     act_fn = name_parts[3]
     
-    print (f'WideResNet-{depth}-{widen}-{act_fn} uses normalization.')
     if 'cifar100' in dataset:
         return WideResNet(num_classes=num_classes, depth=depth, width=widen, activation_fn=_ACTIVATION[act_fn], 
                           mean=CIFAR100_MEAN, std=CIFAR100_STD)
+    elif 'svhn' in dataset:
+        return WideResNet(num_classes=num_classes, depth=depth, width=widen, activation_fn=_ACTIVATION[act_fn], 
+                          mean=SVHN_MEAN, std=SVHN_STD)
     return WideResNet(num_classes=num_classes, depth=depth, width=widen, activation_fn=_ACTIVATION[act_fn])

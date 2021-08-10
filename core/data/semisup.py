@@ -22,7 +22,7 @@ def get_semisup_dataloaders(train_dataset, test_dataset, val_dataset=None, batch
     if val_dataset:
         val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size_test, shuffle=False, **kwargs)
         return train_dataloader, test_dataloader, val_dataloader
-    return train_dataloader, test_dataloader
+    return train_dataloader, test_dataloader, None
 
 
 class SemiSupervisedDataset(torch.utils.data.Dataset):

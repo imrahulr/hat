@@ -76,7 +76,6 @@ def parser_eval():
 
     parser.add_argument('--data-dir', type=str, default='/cluster/home/rarade/adversarial-hat/data/')
     parser.add_argument('--log-dir', type=str, default='/cluster/home/rarade/adversarial-hat/logs/')
-    parser.add_argument('--tmp-dir', type=str, default='/cluster/scratch/rarade/')
         
     parser.add_argument('--desc', type=str, required=True, help='Description of model to be evaluated.')
     parser.add_argument('--num-samples', type=int, default=1000, help='Number of test samples.')

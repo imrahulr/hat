@@ -30,10 +30,9 @@ from gowal21uncovering.utils import WATrainer
 # Setup
 
 parse = parser_train()
+parse.add_argument('--label-smoothing', type=float, default=0.1, help='Label smoothing.')
 parse.add_argument('--tau', type=float, default=None, help='Weight averaging decay.')
 args = parse.parse_args()
-assert args.data in SEMISUP_DATASETS, f'Only data in {SEMISUP_DATASETS} is supported!'
-
 
 DATA_DIR = os.path.join(args.data_dir, args.data)
 LOG_DIR = os.path.join(args.log_dir, args.desc)

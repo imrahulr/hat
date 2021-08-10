@@ -36,16 +36,17 @@ from core.utils import Trainer
 parse = parser_eval()
 args = parse.parse_args()
 
-LOG_DIR = args.log_dir + args.desc
-with open(LOG_DIR+'/args.txt', 'r') as f:
+LOG_DIR = os.path.join(args.log_dir, args.desc)
+with open(os.path.join(LOG_DIR, 'args.txt'), 'r') as f:
     old = json.load(f)
+    old['data_dir'], old['log_dir'] = args.data_dir, args.log_dir
     args.__dict__ = dict(vars(args), **old)
 
-DATA_DIR = args.data_dir + args.data + '/'
-LOG_DIR = args.log_dir + args.desc
-WEIGHTS = LOG_DIR + '/weights-best.pt'
+DATA_DIR = os.path.join(args.data_dir, args.data)
+LOG_DIR = os.path.join(args.log_dir, args.desc)
+WEIGHTS = os.path.join(LOG_DIR, 'weights-best.pt')
 
-logger = Logger(LOG_DIR+'/log-adv.log')
+logger = Logger(os.path.join(LOG_DIR, 'log-adv.log'))
 
 info = get_data_info(DATA_DIR)
 BATCH_SIZE = args.batch_size
@@ -176,12 +177,12 @@ if args.source != None:
         args.attack_iter, args.attack_step = 40, 30/255.0
 
     SRC_LOG_DIR = args.log_dir + args.source
-    with open(SRC_LOG_DIR+'/args.txt', 'r') as f:
+    with open(os.path.join(SRC_LOG_DIR, 'args.txt'), 'r') as f:
         src_args = json.load(f)
         src_args = dotdict(src_args)
     
     src_model = create_model(src_args.model, src_args.normalize, info, device)
-    src_model.load_state_dict(torch.load(SRC_LOG_DIR + '/weights-best.pt')['model_state_dict'])
+    src_model.load_state_dict(torch.load(os.path.join(SRC_LOG_DIR, 'weights-best.pt'))['model_state_dict'])
     src_model.eval()
     
     src_attack = create_attack(src_model, trainer.criterion, args.attack, args.attack_eps, args.attack_iter, args.attack_step)

@@ -32,7 +32,7 @@ def trades_loss(model, x_natural, y, optimizer, step_size=0.003, epsilon=0.031, 
     
     x_adv = x_natural.detach() +  torch.FloatTensor(x_natural.shape).uniform_(-epsilon, epsilon).cuda().detach()
     x_adv = torch.clamp(x_adv, 0.0, 1.0)
-    p_natural = F.softmax(model(x_natural), dim=1)
+    p_natural = F.softmax(model(x_natural), dim=1).detach()
     
     if attack == 'linf-pgd':
         for _ in range(perturb_steps):
@@ -74,13 +74,12 @@ def trades_loss(model, x_natural, y, optimizer, step_size=0.003, epsilon=0.031, 
         x_adv = Variable(x_natural + delta, requires_grad=False)
     else:
         raise ValueError(f'Attack={attack} not supported for TRADES training!')
+    
     model.train()
     track_bn_stats(model, True)
-  
     x_adv = Variable(torch.clamp(x_adv, 0.0, 1.0), requires_grad=False)
     
     optimizer.zero_grad()
-    # calculate robust loss
     logits_natural = model(x_natural)
     logits_adv = model(x_adv)
     loss_natural = criterion_ce(logits_natural, y)
@@ -88,7 +87,7 @@ def trades_loss(model, x_natural, y, optimizer, step_size=0.003, epsilon=0.031, 
                                                     F.softmax(logits_natural, dim=1))
     loss = loss_natural + beta * loss_robust
     
-    batch_metrics = {'loss': loss.item(), 'clean_acc': accuracy(y, logits_natural.detach()), 
-                     'adversarial_acc': accuracy(y, logits_adv.detach())}
-        
+    batch_metrics = {'loss': loss.item()}
+    batch_metrics.update({'clean_acc': accuracy(y, logits_natural.detach()), 
+                          'adversarial_acc': accuracy(y, logits_adv.detach())})    
     return loss, batch_metrics

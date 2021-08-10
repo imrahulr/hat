@@ -42,6 +42,7 @@ class Trainer(object):
 
         self.params = args
         self.criterion = nn.CrossEntropyLoss()
+        
         self.init_optimizer(self.params.num_std_epochs)
         
         if self.params.pretrained_file is not None:
@@ -52,7 +53,7 @@ class Trainer(object):
             with open(os.path.join(self.params.log_dir, self.params.helper_model, 'args.txt'), 'r') as f:
                 hr_args = json.load(f)
             self.hr_model = create_model(hr_args['model'], hr_args['normalize'], info, device)
-            checkpoint = torch.load(os.path.join(self.params.log_dir, self.params.helper_model, 'weights-best.pt'))
+            checkpoint = torch.load(os.path.join(self.params.log_dir, self.params.helper_model, 'weights-best.pt'), map_location=device)
             self.hr_model.load_state_dict(checkpoint['model_state_dict'])
             self.hr_model.eval()
             del checkpoint, hr_args
@@ -98,7 +99,8 @@ class Trainer(object):
             self.scheduler = torch.optim.lr_scheduler.OneCycleLR(self.optimizer, max_lr=self.params.lr, pct_start=0.25,
                                                                  steps_per_epoch=update_steps, epochs=int(num_epochs))
         elif self.params.scheduler == 'step':
-            self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, gamma=0.1, milestones=[100, 105])    
+            milestones = [100, 105]
+            self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, gamma=0.1, milestones=milestones)    
         elif self.params.scheduler == 'cosine':
             self.scheduler = CosineLR(self.optimizer, max_lr=self.params.lr, epochs=int(num_epochs))
         elif self.params.scheduler == 'cosinew':

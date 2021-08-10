@@ -1,3 +1,6 @@
+# Code borrowed from https://github.com/yaircarmon/semisup-adv
+# (Carmon et al 2019)
+
 import math
 import torch
 import torch.nn as nn

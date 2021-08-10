@@ -6,19 +6,21 @@ from .cifar100 import load_cifar100
 from .svhn import load_svhn
 from .cifar10s import load_cifar10s
 from .tiny_imagenet import load_tinyimagenet
+from .cifar100s import load_cifar100s
 
 from .semisup import get_semisup_dataloaders
 
 
-DATASETS = ['cifar10', 'svhn', 'cifar100', 'cifar10s', 'tiny-imagenet']
+SEMISUP_DATASETS = ['cifar10s', 'cifar100s']
+DATASETS = ['cifar10', 'svhn', 'cifar100', 'tiny-imagenet'] + SEMISUP_DATASETS
 
-SEMISUP_DATASETS = ['cifar10s']
 _LOAD_DATASET_FN = {
     'cifar10': load_cifar10,
     'cifar100': load_cifar100,
     'svhn': load_svhn,
     'tiny-imagenet': load_tinyimagenet,
-    'cifar10s': load_cifar10s
+    'cifar10s': load_cifar10s,
+    'cifar100s': load_cifar100s,
 }
 
 
@@ -61,28 +63,30 @@ def load_data(data_dir, batch_size=256, batch_size_test=256, num_workers=4, use_
     dataset = os.path.basename(os.path.normpath(data_dir))
     load_dataset_fn = _LOAD_DATASET_FN[dataset]
     
-    if validation:
-        assert dataset in SEMISUP_DATASETS, 'Only semi-supervised datasets allow a validation set.'
+    if dataset in SEMISUP_DATASETS:
         train_dataset, test_dataset, val_dataset = load_dataset_fn(data_dir=data_dir, use_augmentation=use_augmentation, 
-                                                                   aux_data_filename=aux_data_filename, validation=True)
+                                                                   aux_data_filename=aux_data_filename, validation=validation)
     else:
         train_dataset, test_dataset = load_dataset_fn(data_dir=data_dir, use_augmentation=use_augmentation)
-       
-    if dataset in SEMISUP_DATASETS:
         if validation:
-            train_dataloader, test_dataloader, val_dataloader = get_semisup_dataloaders(
-                train_dataset, test_dataset, val_dataset, batch_size, batch_size_test, num_workers, unsup_fraction
-            )
-        else:
-            train_dataloader, test_dataloader = get_semisup_dataloaders(
-                train_dataset, test_dataset, None, batch_size, batch_size_test, num_workers, unsup_fraction
-            )
+            num_train_samples = len(train_dataset)
+            val_dataset = torch.utils.data.Subset(train_dataset, torch.arange(0, 1024))
+            train_dataset = torch.utils.data.Subset(train_dataset, torch.arange(1024, num_train_samples))
+    
+    if dataset in SEMISUP_DATASETS:
+        train_dataloader, test_dataloader, val_dataloader = get_semisup_dataloaders(
+            train_dataset, test_dataset, val_dataset, batch_size, batch_size_test, num_workers, unsup_fraction
+        )
     else:
         pin_memory = torch.cuda.is_available()
         train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle_train, 
                                                        num_workers=num_workers, pin_memory=pin_memory)
         test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size_test, shuffle=False, 
                                                       num_workers=num_workers, pin_memory=pin_memory)
+        if validation:
+            val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size_test, shuffle=False, 
+                                                         num_workers=num_workers, pin_memory=pin_memory)
+        
     if validation:
         return train_dataset, test_dataset, val_dataset, train_dataloader, test_dataloader, val_dataloader
     return train_dataset, test_dataset, train_dataloader, test_dataloader

@@ -7,7 +7,6 @@ import re
 import numpy as np
 
 from .semisup import SemiSupervisedDataset
-from .semisup import SemiSupervisedSampler
 
 
 def load_cifar10s(data_dir, use_augmentation=False, aux_take_amount=None, 
@@ -40,7 +39,7 @@ def load_cifar10s(data_dir, use_augmentation=False, aux_take_amount=None,
         val_dataset = torchvision.datasets.CIFAR10(root=data_dir, train=True, download=True, transform=test_transform)
         val_dataset = torch.utils.data.Subset(val_dataset, np.arange(0, 1024))  
         return train_dataset, test_dataset, val_dataset
-    return train_dataset, test_dataset
+    return train_dataset, test_dataset, None
 
 
 class SemiSupervisedCIFAR10(SemiSupervisedDataset):

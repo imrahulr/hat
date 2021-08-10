@@ -1,6 +1,6 @@
 autoattack==0.1
 matplotlib==3.4.2
-numpy==1.19.5
+numpy==1.19.0
 pandas==1.2.4
 Pillow==8.2.0
 robustbench==0.1

@@ -64,7 +64,6 @@ if args.model in ['wrn-34-10', 'wrn-34-20'] or 'swish' in args.model or 'imagene
     torch.backends.cudnn.benchmark = True
 
 
-
 # Load data
 
 seed(args.seed)

@@ -43,7 +43,10 @@ class WATrainer(Trainer):
         num_samples = 50000 if 'cifar' in self.params.data else 73257
         num_samples = 100000 if 'tiny-imagenet' in self.params.data else num_samples
         self.update_steps = int(np.floor(num_samples/self.params.batch_size) + 1)
-        self.warmup_steps = 0.025 * self.params.num_adv_epochs * self.update_steps
+        self.warmup_steps = 0
+        if self.params.scheduler in ['cosinew']:
+            self.warmup_steps = 0.025 * self.params.num_adv_epochs * self.update_steps
+        self.num_classes = info['num_classes']
     
     
     def init_optimizer(self, num_epochs):
@@ -124,14 +127,17 @@ class WATrainer(Trainer):
         """
         Helper-based adversarial training.
         """
+        other_args = {'label_smoothing': self.params.label_smoothing}
         if self.params.robust_loss == 'kl':        
             loss, batch_metrics = hat_loss(self.model, x, y, self.optimizer, step_size=self.params.attack_step, 
                                            epsilon=self.params.attack_eps, perturb_steps=self.params.attack_iter, 
-                                           h=h, beta=beta, gamma=gamma, attack=self.params.attack, hr_model=self.hr_model)
+                                           h=h, beta=beta, gamma=gamma, attack=self.params.attack, hr_model=self.hr_model, 
+                                           **other_args)
         else:
             loss, batch_metrics = at_hat_loss(self.model, x, y, self.optimizer, step_size=self.params.attack_step, 
                                               epsilon=self.params.attack_eps, perturb_steps=self.params.attack_iter, 
-                                              h=h, beta=beta, gamma=gamma, attack=self.params.attack, hr_model=self.hr_model)
+                                              h=h, beta=beta, gamma=gamma, attack=self.params.attack, hr_model=self.hr_model, 
+                                              **other_args)
         return loss, batch_metrics
         
 
@@ -139,9 +145,10 @@ class WATrainer(Trainer):
         """
         TRADES training.
         """
+        other_args = {'label_smoothing': self.params.label_smoothing}
         loss, batch_metrics = trades_loss(self.model, x, y, self.optimizer, step_size=self.params.attack_step, 
                                           epsilon=self.params.attack_eps, perturb_steps=self.params.attack_iter, 
-                                          beta=beta, attack=self.params.attack)
+                                          beta=beta, attack=self.params.attack, **other_args)
         return loss, batch_metrics  
 
     
