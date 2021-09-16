@@ -117,12 +117,12 @@ def preact_resnet(name, num_classes=10, pretrained=False, device='cpu'):
         torch.nn.Module.
     """
     if name == 'preact-resnet18':
-        return PreActResNet(PreActBlock, [2,2,2,2], num_classes=num_classes)
+        return PreActResNet(PreActBlock, [2, 2, 2, 2], num_classes=num_classes)
     elif name == 'preact-resnet34':
-        return PreActResNet(PreActBlock, [3,4,6,3], num_classes=num_classes)
+        return PreActResNet(PreActBlock, [3, 4, 6, 3], num_classes=num_classes)
     elif name == 'preact-resnet50':
-        return PreActResNet(PreActBottleneck, [3,4,6,3], num_classes=num_classes)
+        return PreActResNet(PreActBottleneck, [3, 4, 6, 3], num_classes=num_classes)
     elif name == 'preact-resnet101':
-        return PreActResNet(PreActBottleneck, [3,4,23,3], num_classes=num_classes)
+        return PreActResNet(PreActBottleneck, [3, 4, 23, 3], num_classes=num_classes)
     raise ValueError('Only preact-resnet18, preact-resnet34, preact-resnet50 and preact-resnet101 are supported!')
     return

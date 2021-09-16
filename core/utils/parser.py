@@ -19,7 +19,7 @@ def parser_train():
     parser.add_argument('--batch-size-validation', type=int, default=256, help='Batch size for testing.')
     parser.add_argument('--num-samples-eval', type=int, default=512, help='Number of samples to use for margin calculations.')
     
-    parser.add_argument('--data-dir', type=str, default='/cluster/home/rarade/adversarial-hat/data/')
+    parser.add_argument('--data-dir', type=str, default='/cluster/scratch/rarade/data/')
     parser.add_argument('--log-dir', type=str, default='/cluster/home/rarade/adversarial-hat/logs/')
     parser.add_argument('--tmp-dir', type=str, default='/cluster/scratch/rarade/')
     

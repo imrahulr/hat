@@ -1,7 +1,7 @@
 import numpy as np
 
 import torch
-from autoattack.autopgd_pt import APGDAttack
+from autoattack.autopgd_base import APGDAttack
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

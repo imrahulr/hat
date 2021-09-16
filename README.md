@@ -111,35 +111,35 @@ $ python train-wa.py --data-dir <data_dir> \
 
 ## Results
 
-Below, we provide the results with HAT. In the settings with additional data, we follow the experimental setup used in Gowal et al., 2020 and Rebuffi et al., 2021. Whereas we resort to the experimental setup provided in our paper when not using additional data. 
+Below, we provide the results with HAT. In the settings with additional data, we follow the experimental setup used in [Gowal et al., 2020](https://arxiv.org/abs/2010.03593) and [Rebuffi et al., 2021](https://arxiv.org/abs/2103.01946). Whereas we resort to the experimental setup provided in our paper when not using additional data. Our pretrained models are available via [RobustBench](https://robustbench.github.io/).
 
-##### With additional data from Carmon et al., 2019 along with the improvements by Gowal et al. 2020:
+#### With additional data from Carmon et al., 2019 along with the improvements by Gowal et al. 2020
 
 | Dataset | Norm | ε | Model | Clean Acc. | Robust Acc. |
-|:---|:---:|:---:|:---:|:---:|:---:|
+|---|:---:|:---:|:---:|:---:|:---:|
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 8/255 | PreActResNet-18 | 89.02 | 57.67 |
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 8/255 | WideResNet-28-10 | 91.30 | 62.50 |
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 8/255 | WideResNet-34-10 | 91.47 | 62.83 |
 
-Our models achieve around ~0.3-0.5% lower robustness than that reported in Gowal et al., 2020 since they use a custom regenerated pseudolabeled dataset which is not publicly available (See Section 4.3.1 [here](https://arxiv.org/abs/2010.03593)).
+Our models achieve around ~0.3-0.5% lower robustness than that reported in [Gowal et al., 2020](https://arxiv.org/abs/2010.03593) since they use a custom pseudolabeled dataset which is not publicly available (See Section 4.3.1 [here](https://arxiv.org/abs/2010.03593)).
 
-##### With DDPM generated data from Rebuffi et al., 2021:
+#### With DDPM generated data from Rebuffi et al., 2021
 
 | Dataset | Norm | ε | Model | CutMix | Clean Acc. | Robust Acc. |
-|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 8/255 | PreActResNet-18 | &#x2717; | 86.86 | 57.09 |
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 8/255 | WideResNet-28-10 | &#x2717; | 88.16 | 60.97 |
 | CIFAR-10 | &#8467;<sub>2</sub> | 128/255 | PreActResNet-18 | &#x2717; | 90.57 | 76.07 |
 | CIFAR-100 | &#8467;<sub>&infin;</sub> | 8/255 | PreActResNet-18 | &#x2717; | 61.50 | 28.88 |
 
-##### Without additional data:
+#### Without additional data
 
 | Dataset | Norm | ε | Model | Clean Acc. | Robust Acc. |
-|:---|:---:|:---:|:---:|:---:|:---:|
+|---|:---:|:---:|:---:|:---:|:---:|
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 8/255 | ResNet-18 | 84.90 | 49.08 |
 | CIFAR-10 | &#8467;<sub>&infin;</sub> | 12/255 | ResNet-18 | 77.13 | 34.56 |
 | SVHN | &#8467;<sub>&infin;</sub> | 8/255 | ResNet-18 | 92.46 | 53.19 |
-| TI-200 | &#8467;<sub>&infin;</sub> | 8/255 | ResNet-18 | 52.60 | 18.14 |
+| TI-200 | &#8467;<sub>&infin;</sub> | 8/255 | PreActResNet-18 | 52.60 | 18.14 |
 
 
 ## Citing this work
