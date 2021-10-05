@@ -119,13 +119,12 @@ class WideResNet(nn.Module):
         return self.fc(out)
     
     
-def wideresnet(name, num_classes=10, device='cpu'):
+def wideresnet(name, num_classes=10):
     """
     Returns suitable Wideresnet model from its name.
     Arguments:
         name (str): name of resnet architecture.
         num_classes (int): number of target classes.
-        device (str or torch.device): device to work on.
     Returns:
         torch.nn.Module.
     """

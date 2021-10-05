@@ -23,6 +23,7 @@ from core.models import create_model
 from core.utils import Logger
 from core.utils import parser_eval
 from core.utils import seed
+from core import setup
 
 
 
@@ -40,6 +41,12 @@ with open(os.path.join(LOG_DIR, 'args.txt'), 'r') as f:
 DATA_DIR = os.path.join(args.data_dir, args.data)
 LOG_DIR = os.path.join(args.log_dir, args.desc)
 WEIGHTS = os.path.join(LOG_DIR, 'weights-best.pt')
+
+if 'imagenet' in args.data:
+    setup.setup_train(DATA_DIR)
+    setup.setup_val(DATA_DIR)
+    args.data_dir = os.environ['TMPDIR']
+    DATA_DIR = os.path.join(args.data_dir, args.data)
 
 log_path = os.path.join(LOG_DIR, 'log-aa.log')
 logger = Logger(log_path)

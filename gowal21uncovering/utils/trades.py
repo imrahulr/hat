@@ -45,11 +45,12 @@ def trades_loss(model, x_natural, y, optimizer, step_size=0.003, epsilon=0.031, 
             x_adv = torch.clamp(x_adv, 0.0, 1.0)
     
     elif attack == 'l2-pgd':
-        delta = 0.001 * torch.randn(x_natural.shape).cuda().detach()
+        delta = torch.FloatTensor(x.shape).normal_(mean=0, std=1.0).cuda().detach()
+        delta.data = delta.data * np.random.uniform(0.0, epsilon) / (delta.data**2).sum([1, 2, 3], keepdim=True)**0.5
         delta = Variable(delta.data, requires_grad=True)
 
         # Setup optimizers
-        optimizer_delta = optim.SGD([delta], lr=epsilon / perturb_steps * 2)
+        optimizer_delta = optim.SGD([delta], lr=step_size)
 
         for _ in range(perturb_steps):
             adv = x_natural + delta

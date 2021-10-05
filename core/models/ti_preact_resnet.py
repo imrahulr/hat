@@ -106,14 +106,12 @@ class PreActResNet(nn.Module):
         return out
 
 
-def ti_preact_resnet(name, num_classes=200, pretrained=False, device='cpu'):
+def ti_preact_resnet(name, num_classes=200):
     """
     Returns suitable PreAct Resnet model from its name (only for TI-200 dataset).
     Arguments:
         name (str): name of resnet architecture.
         num_classes (int): number of target classes.
-        pretrained (bool): whether to use a pretrained model.
-        device (str or torch.device): device to work on.
     Returns:
         torch.nn.Module.
     """

@@ -32,19 +32,24 @@ def create_model(name, normalize, info, device):
     if info['data'] in ['tiny-imagenet']:
         assert 'preact-resnet' in name and 'swish' not in name, 'Only preact-resnets are supported for this dataset!'
         from .ti_preact_resnet import ti_preact_resnet
-        backbone = ti_preact_resnet(name, num_classes=info['num_classes'], device=device)
+        backbone = ti_preact_resnet(name, num_classes=info['num_classes'])
     
-    elif info['data'] in DATASETS and info['data'] not in ['tiny-imagenet']:
+    elif info['data'] in ['imagenet100']:
+        assert 'preact-resnet' in name and 'swish' not in name, 'Only preact-resnets are supported for this dataset!'
+        from .in_preact_resnet import in_preact_resnet
+        backbone = in_preact_resnet(name, num_classes=info['num_classes'])
+
+    elif info['data'] in DATASETS and 'imagenet' not in info['data']:
         if 'preact-resnet' in name and 'swish' not in name:
-            backbone = preact_resnet(name, num_classes=info['num_classes'], pretrained=False, device=device)
+            backbone = preact_resnet(name, num_classes=info['num_classes'])
         elif 'preact-resnet' in name and 'swish' in name:
-            backbone = preact_resnetwithswish(name, dataset=info['data'], num_classes=info['num_classes'], device=device)
+            backbone = preact_resnetwithswish(name, dataset=info['data'], num_classes=info['num_classes'])
         elif 'resnet' in name and 'preact' not in name:
-            backbone = resnet(name, num_classes=info['num_classes'], pretrained=False, device=device)
+            backbone = resnet(name, num_classes=info['num_classes'])
         elif 'wrn' in name and 'swish' not in name:
-            backbone = wideresnet(name, num_classes=info['num_classes'], device=device)
+            backbone = wideresnet(name, num_classes=info['num_classes'])
         elif 'wrn' in name and 'swish' in name:
-            backbone = wideresnetwithswish(name, dataset=info['data'], num_classes=info['num_classes'], device=device)
+            backbone = wideresnetwithswish(name, dataset=info['data'], num_classes=info['num_classes'])
         else:
             raise ValueError('Invalid model name {}!'.format(name))
     

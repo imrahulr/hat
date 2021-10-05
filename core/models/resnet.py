@@ -9,7 +9,6 @@ class Normalization(nn.Module):
     Arguments:
         mean (list): mean.
         std (float): standard deviation.
-        device (str or torch.device): device to be used.
     Returns:
         (input - mean) / std
     """
@@ -104,10 +103,9 @@ class ResNet(nn.Module):
     Arguments:
         block (BasicBlock or Bottleneck): type of basic block to be used.
         num_blocks (list): number of blocks in each sub-module.
-        num_classes (int): number of output classes.
-        device (torch.device or str): device to work on. 
+        num_classes (int): number of output classes. 
     """
-    def __init__(self, block, num_blocks, num_classes=10, device='cpu'):
+    def __init__(self, block, num_blocks, num_classes=10):
         super(ResNet, self).__init__()
         self.in_planes = 64
 
@@ -139,25 +137,23 @@ class ResNet(nn.Module):
         return out
 
 
-def resnet(name, num_classes=10, pretrained=False, device='cpu'):
+def resnet(name, num_classes=10):
     """
     Returns suitable Resnet model from its name.
     Arguments:
         name (str): name of resnet architecture.
         num_classes (int): number of target classes.
-        pretrained (bool): whether to use a pretrained model.
-        device (str or torch.device): device to work on.
     Returns:
         torch.nn.Module.
     """
     if name == 'resnet18':
-        return ResNet(BasicBlock, [2, 2, 2, 2], num_classes=num_classes, device=device)
+        return ResNet(BasicBlock, [2, 2, 2, 2], num_classes=num_classes)
     elif name == 'resnet34':
-        return ResNet(BasicBlock, [3, 4, 6, 3], num_classes=num_classes, device=device)
+        return ResNet(BasicBlock, [3, 4, 6, 3], num_classes=num_classes)
     elif name == 'resnet50':
-        return ResNet(Bottleneck, [3, 4, 6, 3], num_classes=num_classes, device=device)
+        return ResNet(Bottleneck, [3, 4, 6, 3], num_classes=num_classes)
     elif name == 'resnet101':
-        return ResNet(Bottleneck, [3, 4, 23, 3], num_classes=num_classes, device=device)
+        return ResNet(Bottleneck, [3, 4, 23, 3], num_classes=num_classes)
     
     raise ValueError('Only resnet18, resnet34, resnet50 and resnet101 are supported!')
     return

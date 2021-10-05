@@ -105,14 +105,12 @@ class PreActResNet(nn.Module):
         return out
 
 
-def preact_resnet(name, num_classes=10, pretrained=False, device='cpu'):
+def preact_resnet(name, num_classes=10):
     """
     Returns suitable Resnet model from its name.
     Arguments:
         name (str): name of resnet architecture.
         num_classes (int): number of target classes.
-        pretrained (bool): whether to use a pretrained model.
-        device (str or torch.device): device to work on.
     Returns:
         torch.nn.Module.
     """

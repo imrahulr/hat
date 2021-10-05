@@ -168,13 +168,12 @@ class WideResNet(nn.Module):
         return self.logits(out)
     
     
-def wideresnetwithswish(name, dataset='cifar10', num_classes=10, device='cpu'):
+def wideresnetwithswish(name, dataset='cifar10', num_classes=10):
     """
     Returns suitable Wideresnet model with Swish activation function from its name.
     Arguments:
         name (str): name of resnet architecture.
         num_classes (int): number of target classes.
-        device (str or torch.device): device to work on.
         dataset (str): dataset to use.
     Returns:
         torch.nn.Module.

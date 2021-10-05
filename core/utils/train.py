@@ -93,8 +93,8 @@ class Trainer(object):
         Initialize scheduler.
         """
         if self.params.scheduler == 'cyclic':
-            num_samples = 50000 if 'cifar10' in self.params.data else 73257
-            num_samples = 100000 if 'tiny-imagenet' in self.params.data else num_samples
+            _NUM_SAMPLES = {'svhn': 73257, 'tiny-imagenet': 100000, 'imagenet100': 128334}
+            num_samples = _NUM_SAMPLES.get(self.params.data, 50000)
             update_steps = int(np.floor(num_samples/self.params.batch_size) + 1)
             self.scheduler = torch.optim.lr_scheduler.OneCycleLR(self.optimizer, max_lr=self.params.lr, pct_start=0.25,
                                                                  steps_per_epoch=update_steps, epochs=int(num_epochs))

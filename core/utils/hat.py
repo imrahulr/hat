@@ -33,11 +33,12 @@ def hat_loss(model, x, y, optimizer, step_size=0.007, epsilon=0.031, perturb_ste
             x_adv = torch.min(torch.max(x_adv, x - epsilon), x + epsilon)
             x_adv = torch.clamp(x_adv, 0.0, 1.0)
     elif attack == 'l2-pgd':
-        delta = 0.001 * torch.randn(x.shape).cuda().detach()
+        delta = 0.001 * torch.randn(x.shape).cuda().detach()        
         delta = Variable(delta.data, requires_grad=True)
         
         batch_size = len(x)
-        optimizer_delta = torch.optim.SGD([delta], lr=epsilon / perturb_steps * 2)
+        optimizer_delta = torch.optim.SGD([delta], lr=step_size)
+
         for _ in range(perturb_steps):
             adv = x + delta
             optimizer_delta.zero_grad()

@@ -22,6 +22,7 @@ from core.utils import Logger
 from core.utils import parser_train
 from core.utils import Trainer
 from core.utils import seed
+from core import setup
 
 
 
@@ -46,6 +47,11 @@ logger = Logger(os.path.join(LOG_DIR, 'log-train.log'))
 with open(os.path.join(LOG_DIR, 'args.txt'), 'w') as f:
     json.dump(args.__dict__, f, indent=4)
 
+if 'imagenet' in args.data:
+    setup.setup_train(DATA_DIR)
+    setup.setup_val(DATA_DIR)
+    args.data_dir = os.environ['TMPDIR']
+    DATA_DIR = os.path.join(args.data_dir, args.data)
 
 info = get_data_info(DATA_DIR)
 BATCH_SIZE = args.batch_size

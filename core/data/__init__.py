@@ -7,12 +7,13 @@ from .svhn import load_svhn
 from .cifar10s import load_cifar10s
 from .tiny_imagenet import load_tinyimagenet
 from .cifar100s import load_cifar100s
+from .imagenet100 import load_imagenet100
 
 from .semisup import get_semisup_dataloaders
 
 
 SEMISUP_DATASETS = ['cifar10s', 'cifar100s']
-DATASETS = ['cifar10', 'svhn', 'cifar100', 'tiny-imagenet'] + SEMISUP_DATASETS
+DATASETS = ['cifar10', 'svhn', 'cifar100', 'tiny-imagenet', 'imagenet100'] + SEMISUP_DATASETS
 
 _LOAD_DATASET_FN = {
     'cifar10': load_cifar10,
@@ -21,6 +22,7 @@ _LOAD_DATASET_FN = {
     'tiny-imagenet': load_tinyimagenet,
     'cifar10s': load_cifar10s,
     'cifar100s': load_cifar100s,
+    'imagenet100': load_imagenet100,
 }
 
 
@@ -39,13 +41,15 @@ def get_data_info(data_dir):
         from .svhn import DATA_DESC
     elif 'tiny-imagenet' in data_dir:
         from .tiny_imagenet import DATA_DESC
+    elif 'imagenet100' in data_dir:
+        from .imagenet100 import DATA_DESC
     else:
         raise ValueError(f'Only data in {DATASETS} are supported!')
     DATA_DESC['data'] = dataset
     return DATA_DESC
 
 
-def load_data(data_dir, batch_size=256, batch_size_test=256, num_workers=4, use_augmentation=False, shuffle_train=True, 
+def load_data(data_dir, batch_size=256, batch_size_test=256, num_workers=8, use_augmentation=False, shuffle_train=True, 
               aux_data_filename=None, unsup_fraction=None, validation=False):
     """
     Returns train, test datasets and dataloaders.
