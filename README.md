@@ -1,8 +1,9 @@
 # Helper-based Adversarial Training
 
-This repository contains the code for the paper "[Helper-based Adversarial Training: Reducing Excessive Margin to Achieve a Better Accuracy vs. Robustness Trade-off](https://openreview.net/forum?id=BuD2LmNaU3a)" by Rahul Rade and Seyed-Mohsen Moosavi-Dezfooli. 
+This repository contains the code for the [ICLR 2022](https://iclr.cc/) paper "[Reducing Excessive Margin to Achieve a Better Accuracy vs. Robustness Trade-off](https://openreview.net/forum?id=Azh9QBQ4tR7)" by Rahul Rade and Seyed-Mohsen Moosavi-Dezfooli. 
 
-A short version of the paper has been accepted at the [ICML 2021 Workshop on A Blessing in Disguise: The Prospects and Perils of Adversarial Machine Learning](https://advml-workshop.github.io/icml2021/).
+A short version of the paper has been accepted for Oral presentation at the [ICML 2021 Workshop on A Blessing in Disguise: The Prospects and Perils of Adversarial Machine Learning](https://advml-workshop.github.io/icml2021/) and can be found at this [link](https://openreview.net/forum?id=BuD2LmNaU3a).
+
 
 ## Setup
 
@@ -147,11 +148,11 @@ Our models achieve around ~0.3-0.5% lower robustness than that reported in [Gowa
 
 ```
 @inproceedings{
-    rade2021helperbased,
-    title={Helper-based Adversarial Training: Reducing Excessive Margin to Achieve a Better Accuracy vs. Robustness Trade-off},
+    rade2022reducing,
+    title={Reducing Excessive Margin to Achieve a Better Accuracy vs. Robustness Trade-off},
     author={Rahul Rade and Seyed-Mohsen Moosavi-Dezfooli},
-    booktitle={ICML 2021 Workshop on Adversarial Machine Learning},
-    year={2021},
-    url={https://openreview.net/forum?id=BuD2LmNaU3a}
+    booktitle={International Conference on Learning Representations},
+    year={2022},
+    url={https://openreview.net/forum?id=Azh9QBQ4tR7}
 }
 ```
